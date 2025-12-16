@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import {
   Users,
@@ -18,7 +18,16 @@ import {
   FileText,
   ShieldCheck,
   Search,
-  PenTool
+  PenTool,
+  Star,
+  ArrowLeft,
+  ArrowRight,
+  Phone,
+  Clock,
+  Send,
+  Facebook,
+  Instagram,
+  Twitter
 } from 'lucide-react';
 
 import ruralVisionary from './assets/rural_visionary.png';
@@ -40,55 +49,107 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'The Vision', href: '#home' },
-    { name: 'The Journey', href: '#about' },
-    { name: 'Social Impact', href: '#impact' },
-    { name: 'Enterprises', href: '#ventures' },
+    { name: 'Home', href: '#home' },
+    { name: 'Story', href: '#about' }, // History
+    { name: 'Initiatives', href: '#initiatives' }, // KeyInitiatives
+    { name: 'Services', href: '#services' }, // Services
+    { name: 'Process', href: '#process' }, // Process
+    { name: 'Impact', href: '#impact' }, // Impact
+    { name: 'Gallery', href: '#gallery' }, // Gallery
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white py-4 shadow-md' : 'bg-transparent py-6'}`}>
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <a href="#" className={`text-2xl font-bold tracking-tighter uppercase ${scrolled ? 'text-zinc-900' : 'text-white'}`}>
-          Nellai <span className="text-amber-500">V.M.P</span>
-        </a>
-
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-10 items-center">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`text-sm font-medium tracking-widest uppercase hover:text-amber-500 transition-colors ${scrolled ? 'text-zinc-600' : 'text-white/80'}`}
-            >
-              {link.name}
-            </a>
-          ))}
-          <a href="#contact" className="px-6 py-2 bg-amber-500 text-black text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
-            Contact
+    <>
+      <nav className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out flex justify-center ${scrolled ? 'top-6' : 'top-0'}`}>
+        <div
+          className={`
+            transition-all duration-500 ease-in-out flex items-center justify-between
+            ${scrolled
+              ? 'bg-black/80 backdrop-blur-xl border border-white/10 rounded-full py-3 px-8 shadow-2xl w-[90%] md:w-auto gap-8 md:gap-12'
+              : 'bg-transparent border-0 border-transparent py-8 px-6 w-full container mx-auto'
+            }
+          `}
+        >
+          {/* Logo */}
+          <a href="#" className={`font-serif font-bold tracking-tighter uppercase whitespace-nowrap transition-colors duration-300 ${scrolled ? 'text-white text-xl' : 'text-white text-2xl'}`}>
+            Nellai <span className="text-[#d97706]">V.M.P</span>
           </a>
-        </div>
 
-        {/* Mobile Menu Button */}
-        <button className={scrolled ? 'text-black' : 'text-white'} onClick={() => setIsOpen(!isOpen)}>
-          <Menu className="md:hidden" />
-        </button>
-      </div>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className={`text-xs font-bold uppercase tracking-widest hover:text-[#d97706] transition-colors ${scrolled ? 'text-zinc-300' : 'text-white/90'}`}
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+
+          {/* Contact Button / Mobile Toggle */}
+          <div className="flex items-center gap-4">
+            <a
+              href="#contact"
+              className={`
+                hidden md:flex items-center gap-2 px-5 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all
+                ${scrolled
+                  ? 'bg-white text-black hover:bg-[#d97706] hover:text-white'
+                  : 'bg-[#d97706] text-white hover:bg-white hover:text-black'
+                }
+              `}
+            >
+              <span>Contact</span>
+              <ArrowRight size={12} />
+            </a>
+
+            {/* Mobile Menu Button */}
+            <button
+              className={`md:hidden ${scrolled ? 'text-white' : 'text-white'}`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
+      </nav>
 
       {/* Mobile Menu Overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-zinc-900 z-50 flex flex-col items-center justify-center space-y-8">
-          <button className="absolute top-8 right-8 text-white" onClick={() => setIsOpen(false)}>
-            <X size={32} />
-          </button>
-          {navLinks.map((link) => (
-            <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="text-2xl text-white font-light tracking-wider hover:text-amber-500">
-              {link.name}
-            </a>
-          ))}
-        </div>
-      )}
-    </nav>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 bg-zinc-950/95 backdrop-blur-xl md:hidden flex flex-col pt-32 px-6"
+          >
+            <div className="flex flex-col space-y-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-3xl font-serif text-white hover:text-[#d97706] transition-colors border-b border-white/5 pb-4"
+                >
+                  {link.name}
+                </a>
+              ))}
+              <a href="#contact" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-[#d97706]">
+                Contact Us
+              </a>
+            </div>
+
+            <button
+              className="absolute top-8 right-8 text-zinc-500 hover:text-white transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              <X size={32} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -457,7 +518,7 @@ const Process = () => {
   ];
 
   return (
-    <section className="py-24 bg-zinc-950 text-white relative overflow-hidden">
+    <section id="process" className="py-24 bg-zinc-950 text-white relative overflow-hidden">
 
       {/* Background Texture */}
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#amber-500_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -971,153 +1032,459 @@ const Philosophy = () => {
 };
 
 const Voices = () => {
-  const [activeCase, setActiveCase] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const cases = [
+  const testimonials = [
     {
-      id: "24-0315",
-      title: "Muthuvel vs. Land Encroachers",
-      category: "Agrarian Justice",
-      testimony: "The opposing counsel had money and muscle. We had nothing but fear. Then Mari Pandiyar took the stand. He didn't just argue points of law; he spoke the language of the soil. He stood like a fortress.",
-      author: "Muthuvel",
-      role: "Plaintiff / Farmer",
-      status: "JUSTICE SERVED",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2787&auto=format&fit=crop"
+      id: 0,
+      name: "Muthuvel",
+      role: "Farmer, Kallathi",
+      rating: 5,
+      text: "The opposing counsel had money and muscle. Mari Pandiyar stood like a fortress. He spoke the language of the soil.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2787&auto=format&fit=crop",
+      position: "top-[15%] left-[15%]"
     },
     {
-      id: "24-0402",
-      title: "Project: 'Paruthikkottai'",
-      category: "Film Production",
-      testimony: "In an industry built on smoke and mirrors, his word is concrete. He provided not just the funding, but the creative safety for us to tell a story that matters. A producer with the soul of an artist.",
-      author: "Karthik Subbaraj",
-      role: "Director",
-      status: "RELEASED",
-      image: "https://images.unsplash.com/photo-1615813967515-e1838c1c5116?q=80&w=2787&auto=format&fit=crop"
+      id: 1,
+      name: "Sarah Jenkins",
+      role: "Director, Orbit",
+      rating: 5,
+      text: "The team delivered our SaaS platform 2 weeks ahead of schedule. The code quality is pristine and scalable.",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop",
+      position: "top-[15%] right-[15%]"
     },
     {
-      id: "24-0518",
-      title: "Kallathi Village Trust",
-      category: "Community Welfare",
-      testimony: "We had no voice in the district meetings. He became our loudspeaker. From water rights to school renovations, he ensures that progress doesn't skip our village.",
-      author: "Perumal",
-      role: "Village Head",
-      status: "ONGOING",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop"
+      id: 2,
+      name: "Michael Chen",
+      role: "Founder, Nexus",
+      rating: 4.8,
+      text: "We needed a complete rebrand and digital overhaul. Nexto provided a vision that transformed our market.",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop",
+      position: "top-1/2 -translate-y-1/2 left-[2%]"
+    },
+    {
+      id: 3,
+      name: "Priya Sharma",
+      role: "VP Marketing, Lux",
+      rating: 5,
+      text: "Their understanding of modern aesthetics and user behavior is top-tier. Our conversion rates doubled post-launch.",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop",
+      position: "top-1/2 -translate-y-1/2 right-[2%]"
+    },
+    {
+      id: 4,
+      name: "David Ross",
+      role: "CEO, Civic Tech",
+      rating: 5,
+      text: "A true partner in every sense. They didn't just build what we asked for, they improved upon our core ideas.",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop",
+      position: "bottom-[15%] left-[15%]"
+    },
+    {
+      id: 5,
+      name: "Elena Rodriguez",
+      role: "Product Lead",
+      rating: 4.9,
+      text: "Exceptional communication. The easiest agency collaboration I've had in 10 years.",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
+      position: "bottom-[15%] right-[15%]"
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % testimonials.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="bg-white py-24 relative min-h-[850px] flex items-center justify-center overflow-hidden font-sans">
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+          .font-script { font-family: 'Dancing Script', cursive; }
+        `}
+      </style>
+
+      {/* Background - Clean & Bright with very subtle mesh */}
+      <div className="absolute inset-0 bg-[radial-gradient(#f3f4f6_1px,transparent_1px)] [background-size:20px_20px] opacity-30"></div>
+
+      {/* Decorative Light Gradients - Minimalist */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber-100/30 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-[120px]"></div>
+      </div>
+
+      {/* Central Text Content */}
+      <div className="relative z-10 text-center select-none flex flex-col items-center justify-center mb-16 md:mb-0">
+        <h2
+          className="text-zinc-900 text-xl md:text-3xl font-bold tracking-tight mb-[-0.5rem] md:mb-[-1rem] z-20 relative"
+        >
+          Driven by a
+        </h2>
+
+        <div className="relative z-10">
+          <span className="text-[#d97706] text-6xl md:text-8xl font-script font-bold block cursor-default leading-none transform -rotate-6 translate-y-2" style={{ textShadow: '0 4px 20px rgba(217,119,6,0.15)' }}>
+            Performance
+          </span>
+        </div>
+
+        <h2 className="text-zinc-900 text-4xl md:text-6xl font-extrabold tracking-tight mt-0 md:mt-[-0.5rem] z-20 relative">
+          mindset
+        </h2>
+
+        <div className="h-1.5 w-16 bg-[#d97706] mt-6 rounded-full mx-auto shadow-[0_2px_15px_#fcd34d]"></div>
+      </div>
+
+      {/* Cards Container - Desktop */}
+      <div className="hidden md:block absolute inset-0 w-full h-full max-w-[1600px] mx-auto pointer-events-none">
+        {testimonials.map((t, index) => (
+          <div key={t.id} className={`absolute ${t.position} w-[450px] pointer-events-auto transition-all duration-700 ease-in-out`}>
+            <TestimonialCard data={t} isActive={index === activeIndex} />
+          </div>
+        ))}
+      </div>
+
+      {/* Cards Container - Mobile */}
+      <div className="md:hidden w-full px-6 flex flex-col gap-6 relative z-20">
+        {testimonials.map((t, index) => (
+          <TestimonialCard key={t.id} data={t} isActive={true} />
+        ))}
+      </div>
+
+    </section>
+  );
+};
+
+const TestimonialCard = ({ data, isActive }) => {
+  return (
+    <div
+      className={`
+        relative p-8 rounded-2xl border transition-all duration-700 ease-in-out
+        ${isActive
+          ? 'bg-white/90 backdrop-blur-xl border-amber-200 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] opacity-100 scale-100 z-20'
+          : 'bg-white/40 backdrop-blur-sm border-gray-100 opacity-50 grayscale scale-95 z-0'
+        }
+      `}
+    >
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <img
+            src={data.image}
+            alt={data.name}
+            className={`w-12 h-12 rounded-full object-cover transition-all duration-700 ${isActive ? 'grayscale-0' : 'grayscale'}`}
+          />
+          <div>
+            <h4 className="text-zinc-900 font-bold text-base leading-tight">{data.name}</h4>
+            <p className="text-zinc-500 text-[11px] font-bold uppercase tracking-widest mt-1">{data.role}</p>
+          </div>
+        </div>
+        <div className={`
+          px-2 py-0.5 rounded flex items-center gap-1 border transition-colors duration-700
+          ${isActive ? 'bg-amber-50 border-amber-100' : 'bg-transparent border-transparent'}
+        `}>
+          <span className="text-zinc-700 text-xs font-bold">{data.rating}</span>
+          <Star size={12} className={`${isActive ? 'fill-[#d97706] text-[#d97706]' : 'text-zinc-400'}`} />
+        </div>
+      </div>
+
+      <p className={`text-[15px] leading-relaxed italic transition-colors duration-700 font-medium ${isActive ? 'text-zinc-800' : 'text-zinc-500'}`}>
+        "{data.text}"
+      </p>
+    </div>
+  );
+}
+
+const Gallery = () => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+  });
+
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-65%"]);
+
+  const photos = [
+    {
+      id: 1,
+      src: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2940&auto=format&fit=crop",
+      title: "The Harvest",
+      category: "Rural Service",
+      desc: "Golden paddy fields ready for harvest."
+    },
+    {
+      id: 2,
+      src: "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2940&auto=format&fit=crop",
+      title: "Community Strength",
+      category: "Events",
+      desc: "Women of the village gathering to discuss initiatives."
+    },
+    {
+      id: 3,
+      src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop",
+      title: "Village Walk",
+      category: "Events",
+      desc: "Walking the path of development together."
+    },
+    {
+      id: 4,
+      src: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=2940&auto=format&fit=crop",
+      title: "New Beginnings",
+      category: "Rural Service",
+      desc: "Planting saplings for a greener tomorrow."
+    },
+    {
+      id: 5,
+      src: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?q=80&w=2940&auto=format&fit=crop",
+      title: "On The Set",
+      category: "Film",
+      desc: "Behind the scenes of our latest production."
+    },
+    {
+      id: 6,
+      src: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=2941&auto=format&fit=crop",
+      title: "Tradition",
+      category: "Culture",
+      desc: "Preserving the arts and stories of our ancestors."
     }
   ];
 
   return (
-    <section className="py-24 bg-zinc-800 relative overflow-hidden flex items-center justify-center">
+    <section id="gallery" ref={targetRef} className="relative h-[300vh] bg-zinc-950">
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
 
-      {/* Background Desk Texture */}
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-30 mix-blend-multiply"></div>
-      <div className="absolute inset-0 bg-black/20"></div>
-
-      <div className="container mx-auto px-6 relative z-10">
-
-        <div className="text-center mb-12">
-          <h2 className="text-zinc-400 font-mono text-xs tracking-[0.3em] uppercase mb-4">Archives & Records</h2>
-          <h3 className="text-white text-4xl font-serif">The Case Files</h3>
+        {/* Intro Text (Static relative to horizontal move) */}
+        <div className="absolute top-12 left-12 z-20">
+          <span className="text-[#d97706] font-bold tracking-widest uppercase text-sm mb-2 block">
+            Gallery
+          </span>
+          <h2 className="text-4xl font-serif font-bold text-white">
+            Journey in <span className="italic text-zinc-500">Motion</span>
+          </h2>
         </div>
 
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row shadow-2xl shadow-black/50 rounded-lg overflow-hidden h-auto md:h-[600px]">
+        <motion.div style={{ x }} className="flex gap-16 px-12 md:px-24">
+          {/* Initial Spacer to push content slightly right */}
+          <div className="w-[10vw] shrink-0" />
 
-          {/* Left Sidebar: Case List */}
-          <div className="md:w-1/3 bg-zinc-900 border-r border-zinc-800 overflow-y-auto">
-            <div className="p-6 bg-zinc-950/50 border-b border-zinc-800">
-              <div className="flex items-center gap-2 text-amber-600 font-bold uppercase text-xs tracking-widest">
-                <Search size={14} />
-                <span>Select Record</span>
+          {photos.map((photo) => (
+            <div
+              key={photo.id}
+              className="group relative h-[60vh] w-[80vw] md:w-[60vh] aspect-[3/4] shrink-0 overflow-hidden rounded-[2.5rem] bg-zinc-900 shadow-2xl transition-all duration-500 hover:scale-105"
+            >
+              <img
+                src={photo.src}
+                alt={photo.title}
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+
+              <div className="absolute bottom-0 left-0 p-8 w-full">
+                <span className="inline-block px-3 py-1 bg-[#d97706] text-white text-[10px] font-bold uppercase tracking-widest rounded mb-3">
+                  {photo.category}
+                </span>
+                <h3 className="text-4xl font-serif font-bold text-white mb-2">
+                  {photo.title}
+                </h3>
+                <p className="text-zinc-300 line-clamp-2">
+                  {photo.desc}
+                </p>
               </div>
             </div>
-            {cases.map((item, index) => (
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+
+};
+
+const Locations = () => {
+  const [activeTab, setActiveTab] = useState('hq');
+
+  // Map URLs (Embded Google Maps)
+  // Note: Using rigorous Google Maps Embed API or generic placeholders if specific non-api keys aren't available. 
+  // For this demo, we'll use generic coordinate embeds or standard iframe src structures.
+  const locations = {
+    hq: {
+      id: 'hq',
+      label: 'Headquarters',
+      city: 'Moolaikaraipatti',
+      title: 'Moolaikaraipatti Office',
+      address: 'Moolaikaraipatti Village, Tirunelveli District, Tamil Nadu 627001',
+      phone: '+91 98765 43210',
+      hours: 'Mon - Sat: 9:00 AM - 6:00 PM',
+      mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15769.948286280387!2d77.68965664402636!3d8.535898822605991!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0439f06c1c3855%3A0xc07ce9b06821815d!2sMoolaikaraipatti%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1710520662584!5m2!1sen!2sin"
+    },
+    chennai: {
+      id: 'chennai',
+      label: 'Chennai Branch',
+      city: 'Chennai',
+      title: 'Vadapalani Office',
+      address: '123, Main Road, Vadapalani, Chennai, Tamil Nadu 600026',
+      phone: '+91 98765 43211',
+      hours: 'Mon - Sat: 10:00 AM - 7:00 PM',
+      mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248756.1167538965!2d80.06892461047644!3d13.047487785522778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5265ea4f7d3361%3A0x6e61a70b6863d433!2sChennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1710520712345!5m2!1sen!2sin"
+    }
+  };
+
+  const activeLoc = locations[activeTab];
+
+  return (
+    <section className="py-24 bg-zinc-50 border-t border-zinc-200">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
+
+          {/* Left: Content Panel */}
+          <div className="w-full lg:w-1/3 flex flex-col">
+            <div className="mb-10">
+              <span className="text-[#d97706] font-bold tracking-widest uppercase text-sm mb-3 block">
+                Find Us
+              </span>
+              <h2 className="text-4xl font-serif font-bold text-zinc-900 leading-tight">
+                Our <span className="italic text-zinc-400">Locations</span>
+              </h2>
+            </div>
+
+            {/* Location Selectors */}
+            <div className="space-y-4 mb-10">
               <div
-                key={index}
-                onClick={() => setActiveCase(index)}
-                className={`p-6 border-b border-zinc-800 cursor-pointer transition-all hover:bg-zinc-800 relative ${activeCase === index ? 'bg-zinc-800' : ''}`}
+                onClick={() => setActiveTab('hq')}
+                className={`p-6 rounded-2xl border transition-all cursor-pointer group ${activeTab === 'hq' ? 'bg-white border-[#d97706] shadow-lg scale-[1.02]' : 'bg-transparent border-zinc-200 hover:border-zinc-300'}`}
               >
-                {activeCase === index && <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>}
-                <div className="flex justify-between mb-2">
-                  <span className="font-mono text-zinc-500 text-[10px]">CASE #{item.id}</span>
-                  <span className="text-[10px] font-bold text-zinc-400 bg-zinc-950 px-2 py-0.5 rounded">{item.category}</span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs font-bold uppercase tracking-widest ${activeTab === 'hq' ? 'text-[#d97706]' : 'text-zinc-400'}`}>Headquarters</span>
+                  {activeTab === 'hq' && <div className="w-2 h-2 rounded-full bg-[#d97706]" />}
                 </div>
-                <h4 className={`font-serif text-lg leading-tight ${activeCase === index ? 'text-white' : 'text-zinc-500'}`}>
-                  {item.title}
-                </h4>
+                <h4 className="text-xl font-bold text-zinc-900">Moolaikaraipatti</h4>
               </div>
-            ))}
-          </div>
 
-          {/* Right Content: The File */}
-          <div className="md:w-2/3 bg-[#f5f5f0] relative p-8 md:p-12 text-zinc-900 flex flex-col">
-
-            {/* Paper Texture Overlay */}
-            <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper.png')] pointer-events-none"></div>
-
-            {/* Stamp */}
-            <div className="absolute top-8 right-8 border-4 border-red-800/20 text-red-900/20 font-black text-4xl p-2 -rotate-12 pointer-events-none select-none">
-              {cases[activeCase].status}
+              <div
+                onClick={() => setActiveTab('chennai')}
+                className={`p-6 rounded-2xl border transition-all cursor-pointer group ${activeTab === 'chennai' ? 'bg-white border-[#d97706] shadow-lg scale-[1.02]' : 'bg-transparent border-zinc-200 hover:border-zinc-300'}`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs font-bold uppercase tracking-widest ${activeTab === 'chennai' ? 'text-[#d97706]' : 'text-zinc-400'}`}>Branch Office</span>
+                  {activeTab === 'chennai' && <div className="w-2 h-2 rounded-full bg-[#d97706]" />}
+                </div>
+                <h4 className="text-xl font-bold text-zinc-900">Chennai</h4>
+              </div>
             </div>
 
-            {/* Content Animation */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCase}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="h-full flex flex-col relative z-10"
-              >
-                {/* Header Info */}
-                <div className="border-b-2 border-zinc-800/10 pb-6 mb-8 flex justify-between items-start">
-                  <div>
-                    <div className="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-1">Subject</div>
-                    <div className="font-serif text-2xl font-bold">{cases[activeCase].title}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-1">Date</div>
-                    <div className="font-mono text-sm text-zinc-600">12 DEC 2024</div>
-                  </div>
+            {/* Details for Active Location */}
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white p-8 rounded-3xl shadow-sm border border-zinc-100 mt-auto"
+            >
+              <h3 className="text-2xl font-serif font-bold text-zinc-900 mb-6">{activeLoc.title}</h3>
+
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <MapPin className="text-[#d97706] shrink-0 mt-1" size={20} />
+                  <p className="text-zinc-600 text-sm leading-relaxed">{activeLoc.address}</p>
                 </div>
-
-                {/* The Testimony Typewriter Text */}
-                <div className="flex-grow">
-                  <span className="text-4xl text-zinc-300 font-serif float-left mr-2 leading-none">"</span>
-                  <p className="font-mono text-lg leading-relaxed text-zinc-700 whitespace-pre-wrap">
-                    {cases[activeCase].testimony}
-                  </p>
+                <div className="flex gap-4 items-center">
+                  <Phone className="text-[#d97706] shrink-0" size={20} />
+                  <p className="text-zinc-600 text-sm font-bold">{activeLoc.phone}</p>
                 </div>
-
-                {/* Evidence Photo & Signature */}
-                <div className="mt-8 flex items-end justify-between">
-
-                  {/* Paperclipped Photo */}
-                  <div className="relative transform rotate-2 hover:rotate-0 transition-transform duration-300">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-8 bg-zinc-300 rounded-full z-20"></div> {/* Fake Paperclip */}
-                    <div className="p-2 bg-white shadow-lg border border-zinc-200 w-32 h-32 rotate-2">
-                      <img src={cases[activeCase].image} alt="Evidence" className="w-full h-full object-cover grayscale" />
-                    </div>
-                    <div className="text-[8px] font-mono text-center mt-1 text-zinc-400">EXHIBIT A</div>
-                  </div>
-
-                  <div className="text-right">
-                    <div className="h-16 w-32 flex items-end justify-end">
-                      <span className="font-script text-3xl text-blue-900 rotate-[-5deg] block">{cases[activeCase].author}</span>
-                    </div>
-                    <div className="border-t border-zinc-400 w-40 mt-1"></div>
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mt-1">Signed By: {cases[activeCase].role}</div>
-                  </div>
-
+                <div className="flex gap-4 items-center">
+                  <Clock className="text-[#d97706] shrink-0" size={20} />
+                  <p className="text-zinc-600 text-sm">{activeLoc.hours}</p>
                 </div>
+              </div>
+            </motion.div>
 
-              </motion.div>
-            </AnimatePresence>
+          </div>
 
+          {/* Right: Map Frame */}
+          <div className="w-full lg:w-2/3 h-[500px] lg:h-auto min-h-[500px] bg-zinc-200 rounded-[2.5rem] overflow-hidden shadow-inner border-4 border-white relative group">
+            <iframe
+              src={activeLoc.mapSrc}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="transition-all duration-700"
+            ></iframe>
+
+            {/* Map Overlay Badge */}
+            <div className="absolute top-6 right-6 bg-white py-2 px-4 rounded-full shadow-lg flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-xs font-bold uppercase tracking-widest text-zinc-600">Live Map</span>
+            </div>
           </div>
 
         </div>
+      </div>
+    </section>
+  );
+};
 
+const ContactForm = () => {
+  return (
+    <section className="bg-white py-24 lg:py-32 px-6">
+      <div className="container mx-auto">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+
+          <div className="lg:w-5/12">
+            <span className="text-[#d97706] font-bold tracking-widest uppercase text-sm mb-4 block">Inquiries</span>
+            <h2 className="text-5xl md:text-7xl font-serif text-zinc-900 mb-8 leading-tight">
+              How can we <br /> help you?
+            </h2>
+            <p className="text-zinc-500 text-lg leading-relaxed max-w-md mb-12">
+              Whether you have a question about our initiatives, want to volunteer, or just want to say hello, our team is ready to answer all your questions.
+            </p>
+
+            <div className="space-y-8">
+              <div>
+                <p className="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-2">Email</p>
+                <a href="mailto:hello@nellaimaripandiyar.com" className="text-xl md:text-2xl text-zinc-900 hover:text-[#d97706] transition-colors font-serif border-b border-zinc-200 pb-1">hello@nellaimaripandiyar.com</a>
+              </div>
+              <div>
+                <p className="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-2">Phone</p>
+                <p className="text-xl md:text-2xl text-zinc-900 font-serif border-b border-zinc-200 pb-1 inline-block">+91 98765 43210</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:w-7/12">
+            <form className="space-y-8 bg-zinc-50 p-8 md:p-12 rounded-[2.5rem]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="group">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 group-focus-within:text-[#d97706] transition-colors">First Name</label>
+                  <input type="text" className="w-full border-b border-zinc-200 py-4 text-zinc-900 focus:outline-none focus:border-[#d97706] transition-colors bg-transparent text-lg placeholder-zinc-300" placeholder="John" />
+                </div>
+                <div className="group">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 group-focus-within:text-[#d97706] transition-colors">Last Name</label>
+                  <input type="text" className="w-full border-b border-zinc-200 py-4 text-zinc-900 focus:outline-none focus:border-[#d97706] transition-colors bg-transparent text-lg placeholder-zinc-300" placeholder="Doe" />
+                </div>
+              </div>
+
+              <div className="group">
+                <label className="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 group-focus-within:text-[#d97706] transition-colors">Email Address</label>
+                <input type="email" className="w-full border-b border-zinc-200 py-4 text-zinc-900 focus:outline-none focus:border-[#d97706] transition-colors bg-transparent text-lg placeholder-zinc-300" placeholder="john@example.com" />
+              </div>
+
+              <div className="group">
+                <label className="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 group-focus-within:text-[#d97706] transition-colors">Message</label>
+                <textarea rows="4" className="w-full border-b border-zinc-200 py-4 text-zinc-900 focus:outline-none focus:border-[#d97706] transition-colors bg-transparent text-lg resize-none placeholder-zinc-300" placeholder="Tell us about your project..."></textarea>
+              </div>
+
+              <div className="pt-8">
+                <button className="bg-zinc-900 text-white px-10 py-5 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#d97706] transition-all duration-300 flex items-center gap-4 group shadow-xl">
+                  <span>Send Message</span>
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
       </div>
     </section>
   );
@@ -1125,59 +1492,77 @@ const Voices = () => {
 
 const Footer = () => {
   return (
-    <footer id="contact" className="bg-zinc-950 text-white pt-24 pb-12 border-t border-zinc-900">
-      <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 mb-24">
-          <div>
-            <h2 className="text-4xl font-serif mb-8">Reach Out</h2>
-            <div className="space-y-8">
-              <div className="flex gap-4">
-                <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center flex-shrink-0">
-                  <MapPin size={20} className="text-amber-500" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-1">Moolaikaraipatti (HQ)</h4>
-                  <p className="text-zinc-500">Kallathi Village, Nanguneri Taluk<br />Tirunelveli District</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Building2 size={20} className="text-amber-500" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg mb-1">Chennai Office</h4>
-                  <p className="text-zinc-500">Vadapalani<br />Tamil Nadu</p>
-                </div>
-              </div>
-            </div>
+    <footer id="contact" className="bg-[#0f0f0f] text-white min-h-[80vh] flex flex-col justify-between relative overflow-hidden pt-20">
+
+      {/* Background Branding */}
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none opacity-[0.03]">
+        <span className="text-[20vw] font-bold uppercase tracking-tighter whitespace-nowrap">Visionary</span>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col items-center justify-center mb-24">
+          <span className="text-[#d97706] font-bold tracking-[0.3em] uppercase text-sm mb-6">Contact Us</span>
+          <a href="mailto:contact@nellaimaripandiyar.com" className="text-6xl md:text-9xl font-serif font-bold hover:text-[#d97706] transition-colors duration-500 text-center leading-none">
+            Let's Talk
+          </a>
+          <div className="mt-8 flex items-center gap-4">
+            <span className="h-[1px] w-12 bg-zinc-700"></span>
+            <p className="text-zinc-500 font-light">Available for new opportunities</p>
+            <span className="h-[1px] w-12 bg-zinc-700"></span>
           </div>
-
-          <form className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-zinc-500">First Name</label>
-                <input type="text" className="w-full bg-zinc-900 border-b border-zinc-800 p-3 focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-zinc-500">Last Name</label>
-                <input type="text" className="w-full bg-zinc-900 border-b border-zinc-800 p-3 focus:outline-none focus:border-amber-500 transition-colors" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-zinc-500">Message</label>
-              <textarea rows="4" className="w-full bg-zinc-900 border-b border-zinc-800 p-3 focus:outline-none focus:border-amber-500 transition-colors"></textarea>
-            </div>
-            <button className="px-8 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-amber-500 transition-colors">
-              Send Message
-            </button>
-          </form>
         </div>
+      </div>
 
-        <div className="border-t border-zinc-900 pt-12 flex flex-col md:flex-row justify-between items-center opacity-40 text-xs uppercase tracking-widest">
-          <p>&copy; 2025 Nellai V. Mari Pandiar</p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white">Privacy</a>
-            <a href="#" className="hover:text-white">Terms</a>
+      {/* Detailed Bottom Grid */}
+      <div className="border-t border-white/10 bg-black/20 backdrop-blur-sm">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
+
+            {/* Brand Col */}
+            <div className="py-12 md:pr-12">
+              <h3 className="text-2xl font-serif mb-6">Nellai V.<br />Mari Pandiar</h3>
+              <p className="text-zinc-500 text-sm leading-relaxed mb-6">
+                Empowering rural communities through sustainable development and visionary leadership.
+              </p>
+              <span className="text-xs text-zinc-600 uppercase tracking-widest">&copy; 2025 All Rights Reserved.</span>
+            </div>
+
+            {/* Address Col */}
+            <div className="py-12 md:px-12">
+              <h4 className="font-bold text-white text-xs uppercase tracking-widest mb-8 text-[#d97706]">Locations</h4>
+              <div className="space-y-8">
+                <div>
+                  <p className="font-bold text-sm mb-1 text-white">Headquarters</p>
+                  <p className="text-zinc-500 text-sm">Kallathi Village, Nanguneri, TN</p>
+                </div>
+                <div>
+                  <p className="font-bold text-sm mb-1 text-white">Branch Office</p>
+                  <p className="text-zinc-500 text-sm">Vadapalani, Chennai, TN</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Socials Col */}
+            <div className="py-12 md:px-12">
+              <h4 className="font-bold text-white text-xs uppercase tracking-widest mb-8 text-[#d97706]">Social</h4>
+              <ul className="space-y-4">
+                <li><a href="#" className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors group"><Instagram size={16} className="group-hover:text-[#d97706] transition-colors" /> Instagram</a></li>
+                <li><a href="#" className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors group"><Twitter size={16} className="group-hover:text-[#d97706] transition-colors" /> Twitter</a></li>
+                <li><a href="#" className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors group"><Facebook size={16} className="group-hover:text-[#d97706] transition-colors" /> Facebook</a></li>
+              </ul>
+            </div>
+
+            {/* Menu Col */}
+            <div className="py-12 md:pl-12">
+              <h4 className="font-bold text-white text-xs uppercase tracking-widest mb-8 text-[#d97706]">Menu</h4>
+              <ul className="space-y-4">
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition-colors">Home</a></li>
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition-colors">Our Story</a></li>
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition-colors">Initiatives</a></li>
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition-colors">Gallery</a></li>
+              </ul>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1199,6 +1584,9 @@ function App() {
       <Philosophy />
       <FeaturedProject />
       <Voices />
+      <Gallery />
+      <Locations />
+      <ContactForm />
       <Footer />
     </div>
   );
